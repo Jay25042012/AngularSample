@@ -1,0 +1,105 @@
+<div class="container">
+  <h5 class="card-header">Premium Calculator</h5>
+  <div class="card-body">
+    <div class="form-group" id="form" [formGroup]=form>
+
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-4 col-form-label">Name</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input type="string" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
+              class="form-control" id="name" formControlName="name" required>
+          </div>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <small class="text-danger">
+              Please provide a valid Name.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-4 col-form-label">Date of Birth</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input type="date" [ngClass]="{'is-invalid': dob.invalid && (dob.dirty || dob.touched)}"
+              class="form-control" id="dob" formControlName="dob" (change)=CalculateAge() required>
+          </div>
+          <div *ngIf="dob.invalid && (dob.dirty || dob.touched)">
+            <div *ngIf="dob.errors.required">
+              <small class="text-danger">
+                Please provide a valid Date of Birth.
+              </small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-4 col-form-label">Age</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input type="number" [ngClass]="{'is-invalid': age.invalid && (age.dirty || age.touched)}"
+              class="form-control" id="age" formControlName="age" required>
+          </div>
+          <div *ngIf="age.invalid && (age.dirty || age.touched)">
+            <div *ngIf="age.errors.required || age.errors.min">
+              <small class="text-danger">
+                Please provide a valid age.
+              </small>
+            </div>
+            <div *ngIf="age.errors.max">
+              <small class="text-danger">
+                The age exceeded 99.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-4 col-form-label">Death Cover Amount</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input type="number"
+              [ngClass]="{'is-invalid': deathcoveramount.invalid && (deathcoveramount.dirty || deathcoveramount.touched)}"
+              class="form-control" id="deathcoveramount" formControlName="deathcoveramount" required>
+          </div>
+          <div *ngIf="deathcoveramount.invalid && (deathcoveramount.dirty || deathcoveramount.touched)">
+            <small class="text-danger">
+              Please provide a valid Amount.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="colFormLabel" class="col-sm-4 col-form-label">Occupation</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <select formControlName="occupation" class="form-control" (change)="onOccupationChange($event)">
+              <option [ngValue]="null" disabled>Select</option>
+              <option *ngFor="let occupa of occupations" [ngValue]="occupa.Value">{{occupa.Text}}</option>
+            </select>
+          </div>
+          <div *ngIf="f['occupation'].touched && f['occupation'].invalid">
+            <small class="text-danger"> Occupation is required. </small>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success" (click)="onSubmit()">Calculate</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="card-header">
+<div [@changeDivSize]=currentState>
+<span style="font-size: 26px;">Monthly Premium : ${{result}}</span> </div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger text-center mt-3" role="alert">
+  Connection error!
+</div>
